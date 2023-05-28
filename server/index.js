@@ -9,7 +9,8 @@ import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
-import authRoutes from "./routes/auth.js"
+import notesRoutes from "./routes/notes.js";
+import authRoutes from "./routes/auth.js";
 
 //data imports//
 import User from "./models/User.js";
@@ -19,12 +20,14 @@ import Transaction from "./models/Transaction.js";
 import OverallStat from "./models/OverallStat.js";
 import AffiliateStat from "./models/AffiliateStat.js";
 
-import {dataUser,
+import {
+  dataUser,
   dataProduct,
   dataProductStat,
   dataTransaction,
   dataOverallStat,
-  dataAffiliateStat} from "./data/index.js"
+  dataAffiliateStat,
+} from "./data/index.js";
 
 /* CONFIGURATION */
 dotenv.config();
@@ -42,6 +45,7 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+app.use("/notes", notesRoutes);
 app.use("/auth", authRoutes);
 
 /* MONGOOSE SETUP */
@@ -53,12 +57,12 @@ mongoose
   })
   .then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-  /*Only add data onetime*/
-  // Product.insertMany(dataProduct);
-  // ProductStat.insertMany(dataProductStat);
-  // User.insertMany(dataUser);
-  // AffiliateStat.insertMany(dataAffiliateStat);
-  // OverallStat.insertMany(dataOverallStat);  
-  // Transaction.insertMany(dataTransaction);
+    /*Only add data onetime*/
+    // Product.insertMany(dataProduct);
+    // ProductStat.insertMany(dataProductStat);
+    // User.insertMany(dataUser);
+    // AffiliateStat.insertMany(dataAffiliateStat);
+    // OverallStat.insertMany(dataOverallStat);
+    // Transaction.insertMany(dataTransaction);
   })
   .catch((error) => console.log(`${error} did not connect`));
