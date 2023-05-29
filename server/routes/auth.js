@@ -4,10 +4,10 @@ import { login, logout, refresh, signup } from "../controllers/auth.js";
 const router = Router();
 
 // signup
-router.post("/signUp", signup);
+router.post("/signup/:role", signup);
 
 // login
-router.post("/logIn", login);
+router.post("/login/:role", login);
 
 // get new access token
 router.post("/refresh", refresh);

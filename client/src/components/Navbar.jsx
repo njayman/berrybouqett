@@ -115,6 +115,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
                     sx={{ color: theme.palette.secondary[200] }}
                   >
                     Logged in as{" "}
+                    {console.log(JSON.stringify(user))}
                     {user.role === "admin" ? "Admin" : "Note Taker"}
                   </Typography>
                 </Box>

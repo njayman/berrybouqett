@@ -4,7 +4,7 @@ import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
-const SignIn = ({ toggleAuth }) => {
+const SignIn = ({ toggleAuth, role }) => {
   const [auth, setAuth] = useState({
     email: "",
     password: "",
@@ -17,7 +17,7 @@ const SignIn = ({ toggleAuth }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `${import.meta.env.VITE_APP_BASE_URL}/auth/logIn`,
+      `${import.meta.env.VITE_APP_BASE_URL}/auth/login/${role}`,
       {
         method: "POST",
         body: JSON.stringify(auth),

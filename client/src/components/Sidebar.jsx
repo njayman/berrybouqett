@@ -38,62 +38,77 @@ const navItems = [
   {
     text: "Dashboard",
     icon: <HomeOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Notes",
     icon: <Note />,
+    roles: ["admin", "user"],
   },
   {
     text: "Client Facing",
     icon: null,
+    roles: ["admin"],
   },
   {
     text: "Products",
     icon: <ShoppingCartOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Customers",
     icon: <Groups2Outlined />,
+    roles: ["admin"],
   },
   {
     text: "Transactions",
     icon: <ReceiptLongOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Geography",
     icon: <PublicOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Sales",
     icon: null,
+    roles: ["admin"],
   },
   {
     text: "Overview",
     icon: <PointOfSaleOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Daily",
     icon: <TodayOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Monthly",
     icon: <CalendarMonthOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Breakdown",
     icon: <PieChartOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Management",
     icon: null,
+    roles: ["admin"],
   },
   {
     text: "Admin",
     icon: <AdminPanelSettingsOutlined />,
+    roles: ["admin"],
   },
   {
     text: "Performance",
     icon: <TrendingUpOutlined />,
+    roles: ["admin"],
   },
 ];
 
@@ -148,7 +163,10 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon }) => {
+              {navItems.map(({ text, icon, roles }) => {
+                if (user && !roles.includes(user.role)) {
+                  return;
+                }
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>

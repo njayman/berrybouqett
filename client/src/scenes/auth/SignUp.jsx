@@ -13,7 +13,7 @@ const SignUp = ({ toggleAuth, role }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `${import.meta.env.VITE_APP_BASE_URL}/auth/signUp`,
+      `${import.meta.env.VITE_APP_BASE_URL}/auth/signup`,
       {
         method: "POST",
         body: JSON.stringify({ ...info, role }),
