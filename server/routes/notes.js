@@ -13,6 +13,6 @@ router.get("/", getNotes);
 router.get("/status", getNoteStatus);
 router.post("/add", addNotes);
 router.patch("/:id", editNotes);
-router.patch("/downloadall", downloadAllNotes);
+router.put("/downloadall", downloadAllNotes);
 
 export default router;

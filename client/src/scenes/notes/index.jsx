@@ -13,7 +13,11 @@ const NotesPage = () => {
     <Grid container direction="row" spacing={2}>
       <Grid item xs={12}>
         <Container>
-          {user.role === "admin" ? <AddNotes /> : <NoteStatus />}
+          {user.role === "admin" ? (
+            <AddNotes />
+          ) : (
+            <>{isLoading ? <LinearProgress /> : <NoteStatus data={data} />}</>
+          )}
         </Container>
       </Grid>
       <Grid item xs={12}>

@@ -61,12 +61,9 @@ export const editNotes = async (req, res) => {
 export const downloadAllNotes = async (req, res) => {
   try {
     console.log(req.body);
-    await Note.updateMany(
-      {},
-      { $set: { downloaded: true } }
-    );
+    await Note.updateMany({ downloaded: false }, { downloaded: true });
     res.status(200).json({ message: "Updated all notes download status" });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

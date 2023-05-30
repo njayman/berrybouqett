@@ -134,7 +134,7 @@ const Notes = ({ data }) => {
                   </div> */}
                 </TableCell>
               ))}
-              <TableCell>Special Download</TableCell>
+              {user?.role === "user" && <TableCell>Special Download</TableCell>}
             </TableRow>
           ))}
         </TableHead>
@@ -146,7 +146,11 @@ const Notes = ({ data }) => {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
-              <TableCell>Special Download</TableCell>
+              {user?.role === "user" && (
+                <TableCell>
+                  <Button>Special Download</Button>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

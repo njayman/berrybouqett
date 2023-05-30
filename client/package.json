@@ -13,6 +13,7 @@
     "@nivo/geo": "^0.81.0",
     "@nivo/line": "^0.81.0",
     "@nivo/pie": "^0.81.0",
+    "@react-pdf/renderer": "^3.1.9",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-table": "^8.9.1",
     "@testing-library/jest-dom": "^5.16.5",

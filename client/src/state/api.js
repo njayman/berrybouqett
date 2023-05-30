@@ -88,7 +88,7 @@ export const api = createApi({
       query() {
         return {
           url: `notes/downloadall`,
-          method: "PATCH",
+          method: "PUT",
         };
       },
       invalidatesTags: ["Notes", "NoteStatus"],

@@ -43,7 +43,7 @@ const SignUp = ({ toggleAuth, role }) => {
         spacing={2}
         sx={{ width: "400px" }}
       >
-        <Typography variant="h2">Sign Up</Typography>
+        <Typography variant="h2">Sign Up as {role === "admin"? "Admin": "Note taker"}</Typography>
         <TextField
           value={info["name"]}
           placeholder="Name"

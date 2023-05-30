@@ -10,7 +10,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useIsAuthenticated } from "react-auth-kit";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { Navigate } from "react-router-dom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -32,6 +32,8 @@ const Auth = () => {
   const isAuthenticated = useIsAuthenticated();
   const [auth, setAuth] = useState("signin");
   const [role, setRole] = useState("admin");
+  const user = useAuthUser()();
+
   const toggleAuth = (a) => {
     setAuth(a);
   };
@@ -39,7 +41,11 @@ const Auth = () => {
   if (isAuthenticated()) {
     // If authenticated user, then redirect to secure dashboard
 
-    return <Navigate to={"/dashboard"} replace />;
+    return user.role === "admin" ? (
+      <Navigate to="/dashboard" replace />
+    ) : (
+      <Navigate to="/notes" replace />
+    );
   }
   return (
     <Container sx={{ mt: 8 }}>
