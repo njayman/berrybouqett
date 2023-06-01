@@ -60,8 +60,9 @@ const AddNotes = () => {
         onChange={handleChange}
         required
         multiline
+        rows={1}
       />
-      <Button type="submit" disabled={isLoading}>
+      <Button type="submit" disabled={isLoading} sx={{ color: "white" }}>
         Add
       </Button>
     </Stack>

@@ -11,7 +11,9 @@ import {
   Text,
   PDFDownloadLink,
   StyleSheet,
+  pdf,
 } from "@react-pdf/renderer";
+import JSZip from "jszip";
 
 const styles = StyleSheet.create({
   body: {
@@ -48,16 +50,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyAllDocument = ({ notes }) => (
+const MyDocument = ({ notes, postcode, customerName }) => (
   <Document>
     <Page size="A4" style={styles.body}>
-      {notes.map(({ note, postCode }, key) => (
-        <Fragment key={key}>
-          <Text style={styles.header}>Notes</Text>
-          <Text style={styles.notes}>{note}</Text>
-          <Text style={styles.postcode}>Post Code: {postCode}</Text>
-        </Fragment>
-      ))}
+      <Text style={styles.header}>Name: {customerName}</Text>
+      <Text style={styles.header}>Notes</Text>
+      <Text style={styles.notes}>{notes}</Text>
+      <Text style={styles.postcode}>Post Code: {postcode}</Text>
       <Text
         style={styles.pageNumber}
         render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
@@ -66,6 +65,53 @@ const MyAllDocument = ({ notes }) => (
     </Page>
   </Document>
 );
+
+const myAllDocument = async ({ notes }) => {
+  const noteBlob = await Promise.all(
+    notes?.map(async (note) => {
+      const pdfBlob = await pdf(
+        <MyDocument
+          notes={note.note}
+          postcode={note.postCode}
+          customerName={note.customerName}
+        />
+      ).toBlob();
+      return pdfBlob;
+    })
+  );
+  console.log(noteBlob);
+  noteBlob.map((nb) => {
+    const url = URL.createObjectURL(nb);
+    window.open(url, "_blank");
+  });
+  // console.log(
+  //   await pdf(
+  //     <MyDocument
+  //       notes={notes[0].note}
+  //       postcode={notes[0].postCode}
+  //       customerName={notes[0].customerName}
+  //     />
+  //   ).toBlob()
+  // );
+};
+// (
+//   <Document>
+//     <Page size="A4" style={styles.body}>
+//       {notes.map(({ note, postCode }, key) => (
+//         <Fragment key={key}>
+//           <Text style={styles.header}>Notes</Text>
+//           <Text style={styles.notes}>{note}</Text>
+//           <Text style={styles.postcode}>Post Code: {postCode}</Text>
+//         </Fragment>
+//       ))}
+//       <Text
+//         style={styles.pageNumber}
+//         render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+//         fixed
+//       />
+//     </Page>
+//   </Document>
+// );
 
 const NoteStatus = ({ data: notes }) => {
   const { data, isLoading } = useGetNoteStatusQuery();
@@ -89,7 +135,24 @@ const NoteStatus = ({ data: notes }) => {
             <Typography variant="h2">{data?.count || 0}</Typography>
           </Grid>
           <Grid item xs={3}>
-            <PDFDownloadLink
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "white",
+                color: "black",
+                "&:hover": {
+                  bgcolor: "grey.200",
+                  color: "black",
+                },
+              }}
+              onClick={() =>
+                myAllDocument({ notes: notes.filter((n) => !n.downloaded) })
+              }
+              disabled={mutationLoading}
+            >
+              Download All
+            </Button>
+            {/* <PDFDownloadLink
               document={
                 <MyAllDocument notes={notes.filter((n) => !n.downloaded)} />
               }
@@ -104,7 +167,14 @@ const NoteStatus = ({ data: notes }) => {
                 ) : (
                   <Button
                     variant="contained"
-                    sx={{ bgcolor: "white", color: "black" }}
+                    sx={{
+                      bgcolor: "white",
+                      color: "black",
+                      "&:hover": {
+                        bgcolor: "grey.200",
+                        color: "black",
+                      },
+                    }}
                     onClick={() => setNotesDownloadedAll()}
                     disabled={mutationLoading}
                   >
@@ -112,7 +182,7 @@ const NoteStatus = ({ data: notes }) => {
                   </Button>
                 );
               }}
-            </PDFDownloadLink>
+            </PDFDownloadLink> */}
           </Grid>
         </>
       )}

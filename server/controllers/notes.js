@@ -58,6 +58,16 @@ export const editNotes = async (req, res) => {
   }
 };
 
+export const deleteNotes = async (req, res) => {
+  try {
+    console.log(req.body);
+    await Note.deleteOne({ _id: req.params.id }, { $set: req.body });
+    res.status(200).json({ message: "Noote deleted" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const downloadAllNotes = async (req, res) => {
   try {
     console.log(req.body);

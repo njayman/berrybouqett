@@ -19,7 +19,9 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "jszip": "^3.10.1",
     "jwt-decode": "^3.1.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.2",
     "react-datepicker": "^4.11.0",
@@ -32,7 +34,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview --host"
   },
   "eslintConfig": {
     "extends": [

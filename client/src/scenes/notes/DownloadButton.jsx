@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyDocument = ({ notes, postcode }) => (
+const MyDocument = ({ notes, postcode, customerName }) => (
   <Document>
     <Page size="A4" style={styles.body}>
+      <Text style={styles.header}>Name: {customerName}</Text>
       <Text style={styles.header}>Notes</Text>
       <Text style={styles.notes}>{notes}</Text>
       <Text style={styles.postcode}>Post Code: {postcode}</Text>
@@ -58,11 +59,11 @@ const MyDocument = ({ notes, postcode }) => (
   </Document>
 );
 
-const DownloadButton = ({ status, id }) => {
+const DownloadButton = ({ status, note }) => {
   const [setNotesDownloaded, { isLoading }] = useSetNotesDownloadedMutation();
   const handleClick = () => {
     setNotesDownloaded({
-      params: { id },
+      params: { id: note._id },
       body: {
         downloaded: true,
       },
@@ -70,8 +71,14 @@ const DownloadButton = ({ status, id }) => {
   };
   return (
     <PDFDownloadLink
-      document={<MyDocument notes="kkkk" postcode="5667" />}
-      fileName={`notes-${id}.pdf`}
+      document={
+        <MyDocument
+          notes={note.notes}
+          postcode={note.postCode}
+          customerName={note.customerName}
+        />
+      }
+      fileName={`notes-${note._id}.pdf`}
     >
       {({ blob, url, loading, error }) =>
         loading ? (

@@ -23,6 +23,9 @@ import {
 import React, { useMemo, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import DownloadButton from "./DownloadButton";
+import moment from "moment";
+import EditNotes from "./EditNotes";
+import DeleteNotes from "./DeleteNotes";
 
 const Notes = ({ data }) => {
   const [sorting, setSorting] = useState([]);
@@ -52,7 +55,7 @@ const Notes = ({ data }) => {
         header: () => "Note",
       }),
       columnHelper.accessor("updatedAt", {
-        cell: (info) => info.getValue(),
+        cell: (info) => moment(info.getValue()).format("DD-MM-YYYY hh:mm:ss a"),
         header: () => "Note taking time",
       }),
     ];
@@ -63,8 +66,23 @@ const Notes = ({ data }) => {
             return (
               <DownloadButton
                 status={info.getValue()}
-                id={info.row.original._id}
+                note={info.row.original}
               />
+            );
+          },
+          header: () => "Single Download",
+        })
+      );
+    }
+    if (user?.role === "admin") {
+      clms.push(
+        columnHelper.accessor("_id", {
+          cell: (info) => {
+            return (
+              <>
+                <EditNotes note={info.row.original} />
+                <DeleteNotes id={info.getValue()} />
+              </>
             );
           },
           header: () => "Single Download",
