@@ -1,19 +1,12 @@
 import { Button, Grid, LinearProgress, Typography } from "@mui/material";
-import React, { Fragment } from "react";
+import React from "react";
 import {
   useGetNoteStatusQuery,
   useSetNotesDownloadedAllMutation,
 } from "@state/api";
 
-import {
-  Document,
-  Page,
-  Text,
-  PDFDownloadLink,
-  StyleSheet,
-  pdf,
-} from "@react-pdf/renderer";
-import JSZip from "jszip";
+import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
+// import JSZip from "jszip";
 
 const styles = StyleSheet.create({
   body: {
@@ -145,9 +138,10 @@ const NoteStatus = ({ data: notes }) => {
                   color: "black",
                 },
               }}
-              onClick={() =>
-                myAllDocument({ notes: notes.filter((n) => !n.downloaded) })
-              }
+              onClick={() => {
+                myAllDocument({ notes: notes.filter((n) => !n.downloaded) });
+                setNotesDownloadedAll();
+              }}
               disabled={mutationLoading}
             >
               Download All
