@@ -73,7 +73,7 @@ const DownloadButton = ({ status, note }) => {
     <PDFDownloadLink
       document={
         <MyDocument
-          notes={note.notes}
+          notes={note.note}
           postcode={note.postCode}
           customerName={note.customerName}
         />
