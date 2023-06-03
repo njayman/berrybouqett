@@ -55,11 +55,11 @@ const navItems = [
     icon: <ShoppingCartOutlined />,
     roles: ["admin"],
   },
-  {
-    text: "Customers",
-    icon: <Groups2Outlined />,
-    roles: ["admin"],
-  },
+  // {
+  //   text: "Customers",
+  //   icon: <Groups2Outlined />,
+  //   roles: ["admin"],
+  // },
   {
     text: "Transactions",
     icon: <ReceiptLongOutlined />,
@@ -100,16 +100,16 @@ const navItems = [
     icon: null,
     roles: ["admin"],
   },
-  {
-    text: "Admin",
-    icon: <AdminPanelSettingsOutlined />,
-    roles: ["admin"],
-  },
-  {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
-    roles: ["admin"],
-  },
+  // {
+  //   text: "Admin",
+  //   icon: <AdminPanelSettingsOutlined />,
+  //   roles: ["admin"],
+  // },
+  // {
+  //   text: "Performance",
+  //   icon: <TrendingUpOutlined />,
+  //   roles: ["admin"],
+  // },
 ];
 
 const Sidebar = ({
