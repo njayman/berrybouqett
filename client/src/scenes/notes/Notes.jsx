@@ -26,6 +26,7 @@ import DownloadButton from "./DownloadButton";
 import moment from "moment";
 import EditNotes from "./EditNotes";
 import DeleteNotes from "./DeleteNotes";
+import SpecialDownloadButton from "./SpecialDownloadButton";
 
 const Notes = ({ data }) => {
   const [sorting, setSorting] = useState([]);
@@ -71,6 +72,19 @@ const Notes = ({ data }) => {
             );
           },
           header: () => "Single Download",
+        })
+      );
+      clms.push(
+        columnHelper.accessor("createdAt", {
+          cell: (info) => {
+            return (
+              <SpecialDownloadButton
+                status={info.getValue()}
+                note={info.row.original}
+              />
+            );
+          },
+          header: () => "Special Download",
         })
       );
     }
@@ -152,7 +166,6 @@ const Notes = ({ data }) => {
                   </div> */}
                 </TableCell>
               ))}
-              {user?.role === "user" && <TableCell>Special Download</TableCell>}
             </TableRow>
           ))}
         </TableHead>
@@ -164,11 +177,6 @@ const Notes = ({ data }) => {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
-              {user?.role === "user" && (
-                <TableCell>
-                  <Button>Special Download</Button>
-                </TableCell>
-              )}
             </TableRow>
           ))}
         </TableBody>
