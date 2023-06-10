@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     height: "200px",
     width: "100%",
     objectFit: "contain",
-    margin: "auto"
+    margin: "auto",
   },
 });
 
@@ -61,18 +61,21 @@ const MyDocument = ({ notes }) => (
         >
           <Text
             style={{
-              flex: 1,
+              fontSize: "10px",
             }}
           >
-            Hello, This is some note
+            Leaving a Lasting Impression With Our
+            <br />
+            Freshest Ideas in Gifts For All Occasions.
+            <br />
+            Our fruit bouquets are always made to
+            <br />
+            order using the best Premium Fruit
+            <br />
+            available & Real Gourmet Chocolate.
+            <br />
           </Text>
-          <Text
-            style={{
-              flex: 1,
-            }}
-          >
-            {notes}
-          </Text>
+          <Text>{notes}</Text>
         </View>
       </View>
       <View style={styles.redBody}>
@@ -201,7 +204,7 @@ const SpecialDownloadButton = ({ status, note }) => {
             disabled={isLoading}
             sx={{ color: "white", bgcolor: purple[500] }}
           >
-            {status ? "Downloaded" : "Not downloaded"}
+            Special Download
           </Button>
         )
       }
