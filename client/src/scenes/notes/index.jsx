@@ -115,7 +115,7 @@ const NotesPage = () => {
         adminactions: user?.role === "admin",
       },
     },
-    data,
+    data: isLoading ? [] : data,
     columns,
     state: {
       sorting,
@@ -129,7 +129,7 @@ const NotesPage = () => {
   });
 
   useEffect(() => {
-    console.log(table.getSelectedRowModel());
+    console.log(data);
   }, [table]);
 
   return (
