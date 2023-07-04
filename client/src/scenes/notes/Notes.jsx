@@ -3,7 +3,6 @@ import {
   KeyboardArrowUpRounded,
 } from "@mui/icons-material";
 import {
-  Button,
   Grid,
   Paper,
   Table,
@@ -13,108 +12,9 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import React, { useMemo, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
-import DownloadButton from "./DownloadButton";
-import moment from "moment";
-import EditNotes from "./EditNotes";
-import DeleteNotes from "./DeleteNotes";
-import SpecialDownloadButton from "./SpecialDownloadButton";
+import { flexRender } from "@tanstack/react-table";
 
-const Notes = ({ data }) => {
-  const [sorting, setSorting] = useState([]);
-  const columnHelper = createColumnHelper();
-  const user = useAuthUser()();
-
-  const columns = useMemo(() => {
-    const clms = [
-      columnHelper.accessor("sl", {
-        cell: (info) => info.getValue(),
-        header: () => "Sl no.",
-      }),
-      columnHelper.accessor("customerName", {
-        cell: (info) => info.getValue(),
-        header: () => "Customer Name",
-      }),
-      columnHelper.accessor("orderId", {
-        cell: (info) => info.getValue(),
-        header: () => "Order Id",
-      }),
-      columnHelper.accessor("postCode", {
-        cell: (info) => info.getValue(),
-        header: () => "Post Code",
-      }),
-      columnHelper.accessor("note", {
-        cell: (info) => info.getValue(),
-        header: () => "Note",
-      }),
-      columnHelper.accessor("updatedAt", {
-        cell: (info) => moment(info.getValue()).format("DD-MM-YYYY hh:mm:ss a"),
-        header: () => "Note taking time",
-      }),
-    ];
-    if (user?.role === "user") {
-      clms.push(
-        columnHelper.accessor("downloaded", {
-          cell: (info) => {
-            return (
-              <DownloadButton
-                status={info.getValue()}
-                note={info.row.original}
-              />
-            );
-          },
-          header: () => "Single Download",
-        })
-      );
-      clms.push(
-        columnHelper.accessor("createdAt", {
-          cell: (info) => {
-            return (
-              <SpecialDownloadButton
-                status={info.getValue()}
-                note={info.row.original}
-              />
-            );
-          },
-          header: () => "Special Download",
-        })
-      );
-    }
-    if (user?.role === "admin") {
-      clms.push(
-        columnHelper.accessor("_id", {
-          cell: (info) => {
-            return (
-              <>
-                <EditNotes note={info.row.original} />
-                <DeleteNotes id={info.getValue()} />
-              </>
-            );
-          },
-          header: () => "Single Download",
-        })
-      );
-    }
-    return clms;
-  }, []);
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+const Notes = ({ table }) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -137,7 +37,12 @@ const Notes = ({ data }) => {
                     alignItems="center"
                     wrap="nowrap"
                   >
-                    <Grid item>{header.column.columnDef.header()}</Grid>
+                    <Grid item>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </Grid>
                     <Grid item>
                       {{
                         asc: <KeyboardArrowUpRounded />,

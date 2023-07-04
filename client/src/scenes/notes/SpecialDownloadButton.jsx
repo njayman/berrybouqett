@@ -13,6 +13,7 @@ import { purple } from "@mui/material/colors";
 import logo from "@assets/berry-logo.png";
 import box1 from "@assets/box1.jpg";
 import box2 from "@assets/box2.png";
+import { memo } from "react";
 
 const styles = StyleSheet.create({
   body: {
@@ -212,4 +213,4 @@ const SpecialDownloadButton = ({ status, note }) => {
   );
 };
 
-export default SpecialDownloadButton;
+export default memo(SpecialDownloadButton);

@@ -7,6 +7,7 @@ import {
   PDFDownloadLink,
   StyleSheet,
 } from "@react-pdf/renderer";
+import { memo } from "react";
 
 const styles = StyleSheet.create({
   body: {
@@ -100,4 +101,4 @@ const DownloadButton = ({ status, note }) => {
   );
 };
 
-export default DownloadButton;
+export default memo(DownloadButton);

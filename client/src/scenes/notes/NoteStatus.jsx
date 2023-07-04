@@ -1,4 +1,4 @@
-import { Button, Grid, LinearProgress, Typography } from "@mui/material";
+import { Button, Grid, LinearProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import {
   useGetNoteStatusQuery,
@@ -106,7 +106,7 @@ const myAllDocument = async ({ notes }) => {
 //   </Document>
 // );
 
-const NoteStatus = ({ data: notes }) => {
+const NoteStatus = ({ data: notes, selectedNotes }) => {
   const { data, isLoading } = useGetNoteStatusQuery();
   const [setNotesDownloadedAll, { isLoading: mutationLoading }] =
     useSetNotesDownloadedAllMutation();
@@ -128,24 +128,46 @@ const NoteStatus = ({ data: notes }) => {
             <Typography variant="h2">{data?.count || 0}</Typography>
           </Grid>
           <Grid item xs={3}>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "white",
-                color: "black",
-                "&:hover": {
-                  bgcolor: "grey.200",
+            <Stack direction="row" gap={2}>
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "white",
                   color: "black",
-                },
-              }}
-              onClick={() => {
-                myAllDocument({ notes: notes.filter((n) => !n.downloaded) });
-                setNotesDownloadedAll();
-              }}
-              disabled={mutationLoading}
-            >
-              Download All
-            </Button>
+                  "&:hover": {
+                    bgcolor: "grey.200",
+                    color: "black",
+                  },
+                }}
+                onClick={() => {
+                  myAllDocument({ notes: notes.filter((n) => !n.downloaded) });
+                  setNotesDownloadedAll();
+                }}
+                disabled={mutationLoading}
+              >
+                Download All
+              </Button>
+              <Button
+                sx={{
+                  bgcolor: selectedNotes.length === 0 ? "grey" : "white",
+                  color: "black",
+                  "&:hover": {
+                    bgcolor: "grey.200",
+                    color: "black",
+                  },
+                }}
+                disabled={selectedNotes.length === 0}
+                onClick={() => {
+                  console.log(selectedNotes.map((sl) => sl.original));
+                  myAllDocument({
+                    notes: selectedNotes.map((sl) => sl.original),
+                  });
+                  // setNotesDownloadedAll();
+                }}
+              >
+                Download selected
+              </Button>
+            </Stack>
             {/* <PDFDownloadLink
               document={
                 <MyAllDocument notes={notes.filter((n) => !n.downloaded)} />
