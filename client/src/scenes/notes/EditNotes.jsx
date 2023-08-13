@@ -6,19 +6,24 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
 import { useEditNotesMutation } from "@state/api";
 import { Edit } from "@mui/icons-material";
+import { categoryMenu } from "@utils/config";
 
 const EditNotes = ({ note }) => {
   const [open, setOpen] = useState(false);
   const [editNotes, { isLoading }] = useEditNotesMutation();
   const [notesData, setNotesData] = useState({ ...note });
   const handleChange = (e) =>
-    setNotesData((nd) => ({ ...nd, [e.target.id]: e.target.value }));
+    setNotesData((nd) => ({ ...nd, [e.target.name]: e.target.value }));
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -61,6 +66,25 @@ const EditNotes = ({ note }) => {
                   disabled={isLoading}
                   onChange={handleChange}
                 />
+                <FormControl style={{ width: "400px" }}>
+                  <InputLabel id="select-category-label">Category</InputLabel>
+                  <Select
+                    labelId="select-category-label"
+                    id="category"
+                    name="category"
+                    placeholder="Category"
+                    value={notesData["category"]}
+                    label="Category"
+                    onChange={handleChange}
+                    disabled={isLoading}
+                  >
+                    {categoryMenu.map((cm) => (
+                      <MenuItem value={cm.value} key={cm.value}>
+                        {cm.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <TextField
                   value={notesData["orderId"]}
                   id="orderId"

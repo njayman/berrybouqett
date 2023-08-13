@@ -61,6 +61,7 @@ const AddNotes = () => {
           value={notesData["category"]}
           label="Category"
           onChange={handleChange}
+          disabled={isLoading}
         >
           {categoryMenu.map((cm) => (
             <MenuItem value={cm.value} key={cm.value}>{cm.label}</MenuItem>
