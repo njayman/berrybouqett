@@ -1,19 +1,29 @@
 import { useState } from "react";
-import { Button, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useAddNotesMutation } from "@state/api";
+import { categoryMenu } from "@utils/config";
 
 const initValues = {
   customerName: "",
   orderId: "",
   postCode: "",
   note: "",
+  category:""
 };
 
 const AddNotes = () => {
   const [notesData, setNotesData] = useState({ ...initValues });
   const [addNotes, { isLoading }] = useAddNotesMutation();
   const handleChange = (e) =>
-    setNotesData((nd) => ({ ...nd, [e.target.id]: e.target.value }));
+    setNotesData((nd) => ({ ...nd, [e.target.name]: e.target.value }));
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -40,6 +50,23 @@ const AddNotes = () => {
         disabled={isLoading}
         onChange={handleChange}
       />
+      <FormControl style={{ width: "400px" }}>
+        <InputLabel id="select-category-label">Category</InputLabel>
+        <Select
+          required
+          labelId="select-category-label"
+          id="category"
+          name="category"
+          placeholder="Category"
+          value={notesData["category"]}
+          label="Category"
+          onChange={handleChange}
+        >
+          {categoryMenu.map((cm) => (
+            <MenuItem value={cm.value} key={cm.value}>{cm.label}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <TextField
         value={notesData["postCode"]}
         id="postCode"

@@ -10,6 +10,7 @@ export const getNotes = async (_, res) => {
           orderId: 1,
           postCode: 1,
           note: 1,
+          category: 1,
           downloaded: 1,
           createdAt: 1,
           updatedAt: 1, // Convert slNo to number and rename as sl
@@ -39,6 +40,7 @@ export const getNoteStatus = async (req, res) => {
 
 export const addNotes = async (req, res) => {
   try {
+    console.log(req.body)
     const note = new Note(req.body);
     await note.save();
 

@@ -11,6 +11,7 @@ const NoteSchema = new mongoose.Schema(
       min: 2,
       max: 100,
     },
+    category: { type: String },
     orderId: {
       type: String,
     },
@@ -23,9 +24,9 @@ const NoteSchema = new mongoose.Schema(
       required: true,
     },
     downloaded: {
-        type: Boolean,
-        default: false
-    }
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

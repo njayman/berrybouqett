@@ -14,6 +14,25 @@ import logo from "@assets/berry-logo.png";
 import box1 from "@assets/box1.jpg";
 import box2 from "@assets/box2.png";
 import { memo } from "react";
+import anniversary from "@assets/notes/anniversary.jpg";
+import birthday from "@assets/notes/birthday.jpg";
+import congratulations from "@assets/notes/congratulations.jpg";
+import happyholiday from "@assets/notes/happyholiday.jpg";
+import getwell from "@assets/notes/getwell.jpg";
+import mothersday from "@assets/notes/mothersday.jpg";
+import thinking from "@assets/notes/thinking.jpg";
+import valentinesday from "@assets/notes/valentinesday.jpg";
+
+const categoryImages = {
+  anniversary,
+  birthday,
+  congratulations,
+  getwell,
+  happyholiday,
+  mothersday,
+  thinking,
+  valentinesday,
+};
 
 const styles = StyleSheet.create({
   body: {
@@ -49,8 +68,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyDocument = ({ notes }) => (
+const MyDocument = ({ notes, category }) => (
   <Document>
+    <Page style={styles.body}>
+      <View style={styles.evenFlexRow}>
+        <Image
+          src={categoryImages[category]}
+          style={{ ...styles.image, flex: 1 }}
+        />
+      </View>
+    </Page>
     <Page style={styles.body}>
       <View style={styles.evenFlexRow}>
         <Image src={box1} style={{ ...styles.image, flex: 1 }} />
@@ -190,6 +217,7 @@ const SpecialDownloadButton = ({ status, note }) => {
           notes={note.note}
           postcode={note.postCode}
           customerName={note.customerName}
+          category={note.category}
         />
       }
       fileName={`notes-${note._id}.pdf`}
