@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
+import path from "path"
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -10,6 +11,7 @@ import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 import notesRoutes from "./routes/notes.js";
+import categoriesRoutes from "./routes/categories.js"
 import authRoutes from "./routes/auth.js";
 
 //data imports//
@@ -39,6 +41,8 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+const baseDir = new URL(".", import.meta.url).pathname;
+
 
 /* ROUTES */
 app.use("/client", clientRoutes);
@@ -46,7 +50,10 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 app.use("/notes", notesRoutes);
+app.use("/categories", categoriesRoutes);
 app.use("/auth", authRoutes);
+app.use("/uploads", express.static(path.join(baseDir, "uploads")));
+
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;

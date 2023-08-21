@@ -27,3 +27,11 @@ body,
 ::-webkit-scrollbar-track:hover {
   background: #21295c;
 }
+
+@font-face {
+  font-family: 'Scriptin';
+  /* Use the same name as in your theme Pacifico */
+  src: url('./assets/SCRIPTIN.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

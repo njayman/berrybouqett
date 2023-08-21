@@ -4,7 +4,7 @@ import { useGetNotesQuery } from "@state/api";
 import Notes from "./Notes";
 import { useAuthUser } from "react-auth-kit";
 import NoteStatus from "./NoteStatus";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DownloadButton from "./DownloadButton";
 import moment from "moment";
 import EditNotes from "./EditNotes";
@@ -16,6 +16,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import { useGetCategoriesQuery } from "@state/api";
 
 const NotesPage = () => {
     const { data, isLoading } = useGetNotesQuery();
@@ -23,6 +24,7 @@ const NotesPage = () => {
     const user = useAuthUser()();
     const [rowSelection, setRowSelection] = useState({});
     const columnHelper = createColumnHelper();
+    const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
 
     const columns = useMemo(() => {
         const clms = [
@@ -88,10 +90,12 @@ const NotesPage = () => {
             columnHelper.accessor("spdownload", {
                 cell: (info) => {
                     return (
-                        <SpecialDownloadButton
+                        <><SpecialDownloadButton
                             status={info.getValue()}
                             note={info.row.original}
+                            category={categories?.find(category => category.value === info.row.original.category)?.image || "img"}
                         />
+                        </>
                     );
                 },
                 header: () => "Special Download",
@@ -101,7 +105,7 @@ const NotesPage = () => {
                     return (
                         <>
                             <EditNotes note={info.row.original} />
-                            <DeleteNotes id={info.getValue()} />
+                            <DeleteNotes id={info.row.original._id} />
                         </>
                     );
                 },
@@ -131,10 +135,6 @@ const NotesPage = () => {
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
-
-    useEffect(() => {
-        console.log(data);
-    }, [table]);
 
     return (
         <Grid container direction="row" spacing={2}>

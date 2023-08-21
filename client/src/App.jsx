@@ -3,7 +3,6 @@ import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { themeSettings } from "@theme";
-
 import { AuthProvider } from "react-auth-kit";
 import Router from "./Router";
 // import Admin from "scenes/admin";

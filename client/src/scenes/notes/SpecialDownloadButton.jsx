@@ -8,6 +8,7 @@ import {
   StyleSheet,
   View,
   Image,
+  Font,
 } from "@react-pdf/renderer";
 import { purple } from "@mui/material/colors";
 import logo from "@assets/berry-logo.png";
@@ -22,6 +23,9 @@ import getwell from "@assets/notes/getwell.jpg";
 import mothersday from "@assets/notes/mothersday.jpg";
 import thinking from "@assets/notes/thinking.jpg";
 import valentinesday from "@assets/notes/valentinesday.jpg";
+import Scriptin from "@assets/SCRIPTIN.ttf"
+
+Font.register({ family: 'Scriptin', src: Scriptin });
 
 const categoryImages = {
   anniversary,
@@ -66,141 +70,49 @@ const styles = StyleSheet.create({
     objectFit: "contain",
     margin: "auto",
   },
+  note: {
+    fontFamily: "Scriptin"
+  }
 });
 
-const MyDocument = ({ notes, category }) => (
+const MyDocument = ({ notes, category, postcode }) => (
   <Document>
-    <Page style={styles.body}>
+    <Page style={styles.body} size="A5">
       <View style={styles.evenFlexRow}>
         <Image
-          src={categoryImages[category]}
+          src={category}
           style={{ ...styles.image, flex: 1 }}
         />
       </View>
     </Page>
-    <Page style={styles.body}>
+    <Page style={styles.body} size="A5">
       <View style={styles.evenFlexRow}>
-        <Image src={box1} style={{ ...styles.image, flex: 1 }} />
         <View
           style={{
             ...styles.evenFlexColumn,
             flex: 1,
           }}
         >
-          <Text
-            style={{
-              fontSize: "10px",
-            }}
-          >
-            Leaving a Lasting Impression With Our
-            <br />
-            Freshest Ideas in Gifts For All Occasions.
-            <br />
-            Our fruit bouquets are always made to
-            <br />
-            order using the best Premium Fruit
-            <br />
-            available & Real Gourmet Chocolate.
-            <br />
-          </Text>
-          <Text>{notes}</Text>
+          <Text style={{
+            fontSize: 16,
+            fontFamily: "Scriptin"
+          }}>{notes}</Text>
         </View>
       </View>
-      <View style={styles.redBody}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: "25px",
-          }}
-        >
-          We deliver nationwide the next day
-        </Text>
-      </View>
-      <View style={styles.evenFlexRow}>
-        <View
-          style={{
-            display: "flex",
-            ...styles.evenFlexColumn,
-
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              textAlign: "right",
-              padding: "15px",
-            }}
-          >
-            <Image src={logo} style={{ ...styles.image, height: "80px" }} />
-            <Text
-              style={{
-                fontWeight: "lighter",
-                fontSize: "30px",
-              }}
-            >
-              The best things
-            </Text>
-            <Text
-              style={{
-                fontWeight: "bolder",
-                fontSize: "40px",
-                color: "red",
-              }}
-            >
-              in life
-            </Text>
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: "37px",
-              }}
-            >
-              are delicious
-            </Text>
-
-            <Text
-              style={{
-                fontWeight: "bolder",
-                fontSize: "17px",
-                color: "red",
-              }}
-            >
-              Visit us at:
-            </Text>
-            <Text
-              style={{
-                fontWeight: "bolder",
-                fontSize: "17px",
-              }}
-            >
-              www.berrybouquets.co.uk
-            </Text>
-            <Text
-              style={{
-                fontWeight: "bolder",
-                fontSize: "17px",
-                color: "red",
-              }}
-            >
-              Call us on:
-            </Text>
-            <Text
-              style={{
-                fontWeight: "bolder",
-                fontSize: "17px",
-              }}
-            >
-              0333 015 0202
-            </Text>
-          </View>
-        </View>
-        <Image src={box2} style={{ ...styles.image, flex: 1 }} />
-      </View>
+      <Text style={{
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        padding: "3px",
+        backgroundColor: "black",
+        color: "white",
+      }}>{postcode}</Text>
     </Page>
+
   </Document>
 );
 
-const SpecialDownloadButton = ({ status, note }) => {
+const SpecialDownloadButton = ({ status, note, category }) => {
   const [setNotesDownloaded, { isLoading }] = useSetNotesDownloadedMutation();
   const handleClick = () => {
     setNotesDownloaded({
@@ -217,7 +129,7 @@ const SpecialDownloadButton = ({ status, note }) => {
           notes={note.note}
           postcode={note.postCode}
           customerName={note.customerName}
-          category={note.category}
+          category={category}
         />
       }
       fileName={`notes-${note._id}.pdf`}

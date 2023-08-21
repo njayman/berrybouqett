@@ -9,18 +9,19 @@ import {
   TextField,
 } from "@mui/material";
 import { useAddNotesMutation } from "@state/api";
-import { categoryMenu } from "@utils/config";
+import { useGetCategoriesQuery } from "@state/api";
 
 const initValues = {
   customerName: "",
   orderId: "",
   postCode: "",
   note: "",
-  category:""
+  category: ""
 };
 
 const AddNotes = () => {
   const [notesData, setNotesData] = useState({ ...initValues });
+  const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
   const [addNotes, { isLoading }] = useAddNotesMutation();
   const handleChange = (e) =>
     setNotesData((nd) => ({ ...nd, [e.target.name]: e.target.value }));
@@ -28,7 +29,9 @@ const AddNotes = () => {
     e.preventDefault();
     try {
       await addNotes(notesData);
-    } catch (error) {}
+    } catch (error) { } finally {
+      setNotesData(initValues)
+    }
   };
   return (
     <Stack component="form" direction="row" spacing={2} onSubmit={onSubmit}>
@@ -50,7 +53,7 @@ const AddNotes = () => {
         disabled={isLoading}
         onChange={handleChange}
       />
-      <FormControl style={{ width: "400px" }}>
+      {!isCategoriesLoading && <FormControl style={{ width: "400px" }}>
         <InputLabel id="select-category-label">Category</InputLabel>
         <Select
           required
@@ -63,11 +66,11 @@ const AddNotes = () => {
           onChange={handleChange}
           disabled={isLoading}
         >
-          {categoryMenu.map((cm) => (
+          {categories.map((cm) => (
             <MenuItem value={cm.value} key={cm.value}>{cm.label}</MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </FormControl>}
       <TextField
         value={notesData["postCode"]}
         id="postCode"
