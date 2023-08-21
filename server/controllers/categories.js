@@ -28,7 +28,7 @@ export const getCategories = async (_, res) => {
 export const addCategories = async (req, res) => {
     try {
         const { label, value } = req.body;
-        const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/${req.file.path}` : "";
+        const imageUrl = req.file ? `//${req.get("host")}/${req.file.path}` : "";
         const category = new Category({
             label: label,
             value: value,

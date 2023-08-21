@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 const MyDocument = ({ notes, category, postcode }) => (
   <Document>
-    <Page style={styles.body} size="A5">
+    <Page style={styles.body} size="A5" orientation="landscape">
       <View style={styles.evenFlexRow}>
         <Image
           cache={false}
@@ -67,7 +67,7 @@ const MyDocument = ({ notes, category, postcode }) => (
         />
       </View>
     </Page>
-    <Page style={styles.body} size="A5">
+    <Page style={styles.body} size="A5" orientation="landscape">
       <View style={styles.evenFlexRow}>
         <View
           style={{
