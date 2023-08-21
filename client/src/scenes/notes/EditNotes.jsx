@@ -16,10 +16,11 @@ import {
 } from "@mui/material";
 import { useEditNotesMutation } from "@state/api";
 import { Edit } from "@mui/icons-material";
-import { categoryMenu } from "@utils/config";
+import { useGetCategoriesQuery } from "@state/api";
 
 const EditNotes = ({ note }) => {
   const [open, setOpen] = useState(false);
+  const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
   const [editNotes, { isLoading }] = useEditNotesMutation();
   const [notesData, setNotesData] = useState({ ...note });
   const handleChange = (e) =>
@@ -44,7 +45,7 @@ const EditNotes = ({ note }) => {
       if (data) {
         handleClose();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <>
@@ -78,7 +79,7 @@ const EditNotes = ({ note }) => {
                     onChange={handleChange}
                     disabled={isLoading}
                   >
-                    {categoryMenu.map((cm) => (
+                    {categories.map((cm) => (
                       <MenuItem value={cm.value} key={cm.value}>
                         {cm.label}
                       </MenuItem>
