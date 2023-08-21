@@ -64,7 +64,7 @@ const NotesPage = () => {
                 header: () => "Order Id",
             }),
             columnHelper.accessor("category", {
-                cell: (info) => info.getValue(),
+                cell: (info) => info.getValue().label,
                 header: () => "Category",
             }),
             columnHelper.accessor("postCode", {
@@ -88,16 +88,14 @@ const NotesPage = () => {
                 header: () => "Single Download",
             }),
             columnHelper.accessor("spdownload", {
-                cell: (info) => {
-                    return (
-                        <><SpecialDownloadButton
+                cell: (info) =>
+                    <>
+                        <SpecialDownloadButton
                             status={info.getValue()}
                             note={info.row.original}
-                            category={categories?.find(category => category.value === info.row.original.category)?.image || "img"}
                         />
-                        </>
-                    );
-                },
+                    </>
+                ,
                 header: () => "Special Download",
             }),
             columnHelper.accessor("adminactions", {

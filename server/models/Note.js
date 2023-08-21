@@ -11,7 +11,7 @@ const NoteSchema = new mongoose.Schema(
       min: 2,
       max: 100,
     },
-    category: { type: String },
+    category: { type: mongoose.Types.ObjectId, ref: "Category" },
     orderId: {
       type: String,
     },

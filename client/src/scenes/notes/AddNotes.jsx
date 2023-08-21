@@ -67,7 +67,7 @@ const AddNotes = () => {
           disabled={isLoading}
         >
           {categories.map((cm) => (
-            <MenuItem value={cm.value} key={cm.value}>{cm.label}</MenuItem>
+            <MenuItem value={cm._id} key={cm.value}>{cm.label}</MenuItem>
           ))}
         </Select>
       </FormControl>}

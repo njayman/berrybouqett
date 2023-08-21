@@ -11,32 +11,12 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import { purple } from "@mui/material/colors";
-import logo from "@assets/berry-logo.png";
-import box1 from "@assets/box1.jpg";
-import box2 from "@assets/box2.png";
 import { memo } from "react";
-import anniversary from "@assets/notes/anniversary.jpg";
-import birthday from "@assets/notes/birthday.jpg";
-import congratulations from "@assets/notes/congratulations.jpg";
-import happyholiday from "@assets/notes/happyholiday.jpg";
-import getwell from "@assets/notes/getwell.jpg";
-import mothersday from "@assets/notes/mothersday.jpg";
-import thinking from "@assets/notes/thinking.jpg";
-import valentinesday from "@assets/notes/valentinesday.jpg";
 import Scriptin from "@assets/SCRIPTIN.ttf"
 
 Font.register({ family: 'Scriptin', src: Scriptin });
 
-const categoryImages = {
-  anniversary,
-  birthday,
-  congratulations,
-  getwell,
-  happyholiday,
-  mothersday,
-  thinking,
-  valentinesday,
-};
+
 
 const styles = StyleSheet.create({
   body: {
@@ -80,6 +60,8 @@ const MyDocument = ({ notes, category, postcode }) => (
     <Page style={styles.body} size="A5">
       <View style={styles.evenFlexRow}>
         <Image
+          cache={false}
+          source={category}
           src={category}
           style={{ ...styles.image, flex: 1 }}
         />
@@ -112,7 +94,7 @@ const MyDocument = ({ notes, category, postcode }) => (
   </Document>
 );
 
-const SpecialDownloadButton = ({ status, note, category }) => {
+const SpecialDownloadButton = ({ status, note }) => {
   const [setNotesDownloaded, { isLoading }] = useSetNotesDownloadedMutation();
   const handleClick = () => {
     setNotesDownloaded({
@@ -129,7 +111,7 @@ const SpecialDownloadButton = ({ status, note, category }) => {
           notes={note.note}
           postcode={note.postCode}
           customerName={note.customerName}
-          category={category}
+          category={note.category.image}
         />
       }
       fileName={`notes-${note._id}.pdf`}

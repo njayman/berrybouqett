@@ -1,8 +1,20 @@
 import Note from "../models/Note.js";
+// import Specialnote from "../templates/Specialnote.js";
 
 export const getNotes = async (_, res) => {
     try {
         const notes = await Note.aggregate([
+            {
+                $lookup: {
+                    from: 'categories', // Collection name
+                    localField: 'category',
+                    foreignField: '_id',
+                    as: 'category',
+                },
+            },
+            {
+                $unwind: '$category',
+            },
             {
                 $project: {
                     sl: { $toInt: "$slNo" },
@@ -10,7 +22,7 @@ export const getNotes = async (_, res) => {
                     orderId: 1,
                     postCode: 1,
                     note: 1,
-                    category: 1,
+                    category: '$category',
                     downloaded: 1,
                     createdAt: 1,
                     updatedAt: 1, // Convert slNo to number and rename as sl
@@ -69,6 +81,22 @@ export const deleteNotes = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+// export const specialDownload = async (req, res) => {
+//     try {
+//         // Calling the template render func with dynamic data
+//         const result = await Specialnote(req.body);
+
+//         // Setting up the response headers
+//         res.setHeader("Content-Type", "application/pdf");
+//         res.setHeader("Content-Disposition", `attachment; filename=export.pdf`);
+
+//         // Streaming our resulting pdf back to the user
+//         result.pipe(res);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// }
 
 export const downloadAllNotes = async (req, res) => {
     try {

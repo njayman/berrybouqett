@@ -80,7 +80,7 @@ const EditNotes = ({ note }) => {
                     disabled={isLoading}
                   >
                     {categories.map((cm) => (
-                      <MenuItem value={cm.value} key={cm.value}>
+                      <MenuItem value={cm._id} key={cm.value}>
                         {cm.label}
                       </MenuItem>
                     ))}
