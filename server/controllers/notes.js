@@ -98,9 +98,17 @@ export const deleteNotes = async (req, res) => {
 //     }
 // }
 
-export const downloadAllNotes = async (req, res) => {
+export const downloadBulkNotes = async (req, res) => {
     try {
-        console.log(req.body);
+        await Note.updateMany({ _id: { $in: req.body.notes } }, { downloaded: true });
+        res.status(200).json({ message: "Updated all notes download status" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const downloadAllNotes = async (_, res) => {
+    try {
         await Note.updateMany({ downloaded: false }, { downloaded: true });
         res.status(200).json({ message: "Updated all notes download status" });
     } catch (error) {

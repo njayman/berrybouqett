@@ -7,6 +7,7 @@ import {
 import { MyBulkDocument } from "./MyDocument"
 
 import { pdf } from "@react-pdf/renderer";
+import { useSetNotesDownloadedBulkMutation } from "@state/api";
 
 const myAllDocument = async ({ notes }) => {
     try {
@@ -22,11 +23,19 @@ const NoteStatus = ({ data: notes, selectedNotes }) => {
     const { data, isLoading } = useGetNoteStatusQuery();
     const [setNotesDownloadedAll, { isLoading: mutationLoading }] =
         useSetNotesDownloadedAllMutation();
+    const [setNotesDownloadedBulk, { isLoading: bulkDownloadLoading }] = useSetNotesDownloadedBulkMutation();
 
     const handleDownloadSelectedNoted = () => {
+        const selNotes = selectedNotes.map((sl) => sl.original)
         myAllDocument({
-            notes: selectedNotes.map((sl) => sl.original),
+            notes: selNotes,
         });
+        const selNotesIds = selNotes.map(sn => sn._id)
+        setNotesDownloadedBulk({
+            body: {
+                notes: selNotesIds
+            }
+        })
     }
 
     const handleDownloadAll = () => {
@@ -82,7 +91,7 @@ const NoteStatus = ({ data: notes, selectedNotes }) => {
                                         color: "black",
                                     },
                                 }}
-                                disabled={selectedNotes.length === 0}
+                                disabled={bulkDownloadLoading || selectedNotes.length === 0}
                                 onClick={handleDownloadSelectedNoted}
                             >
                                 Download selected

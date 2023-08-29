@@ -95,11 +95,20 @@ export const api = createApi({
         }),
         setNotesDownloaded: build.mutation({
             query({ params, body }) {
-                console.log(params);
                 return {
                     url: `notes/${params.id}`,
                     method: "PATCH",
                     body,
+                };
+            },
+            invalidatesTags: ["Notes", "NoteStatus"],
+        }),
+        setNotesDownloadedBulk: build.mutation({
+            query({ body }) {
+                return {
+                    url: `notes/downloadbulk`,
+                    method: "PUT",
+                    body
                 };
             },
             invalidatesTags: ["Notes", "NoteStatus"],
@@ -169,5 +178,6 @@ export const {
     useDeleteNotesMutation,
     useDeleteCategoriesMutation,
     useSetNotesDownloadedMutation,
+    useSetNotesDownloadedBulkMutation,
     useSetNotesDownloadedAllMutation,
 } = api;
