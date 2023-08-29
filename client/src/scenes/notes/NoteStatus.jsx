@@ -1,209 +1,98 @@
 import { Button, Grid, LinearProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import {
-  useGetNoteStatusQuery,
-  useSetNotesDownloadedAllMutation,
+    useGetNoteStatusQuery,
+    useSetNotesDownloadedAllMutation,
 } from "@state/api";
+import { MyBulkDocument } from "./MyDocument"
 
-import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
-// import JSZip from "jszip";
-
-const styles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
-  },
-  header: {
-    fontSize: 18,
-    margin: 12,
-    textAlign: "justify",
-    fontFamily: "Times-Roman",
-  },
-  notes: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: "justify",
-    fontFamily: "Times-Roman",
-  },
-  postcode: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: "right",
-    fontFamily: "Times-Roman",
-  },
-  pageNumber: {
-    position: "absolute",
-    fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
-    textAlign: "center",
-    color: "grey",
-  },
-});
-
-const MyDocument = ({ notes, postcode, customerName }) => (
-  <Document>
-    <Page size="A4" style={styles.body}>
-      <Text style={styles.header}>Name: {customerName}</Text>
-      <Text style={styles.header}>Notes</Text>
-      <Text style={styles.notes}>{notes}</Text>
-      <Text style={styles.postcode}>Post Code: {postcode}</Text>
-      <Text
-        style={styles.pageNumber}
-        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
-        fixed
-      />
-    </Page>
-  </Document>
-);
+import { pdf } from "@react-pdf/renderer";
 
 const myAllDocument = async ({ notes }) => {
-  const noteBlob = await Promise.all(
-    notes?.map(async (note) => {
-      const pdfBlob = await pdf(
-        <MyDocument
-          notes={note.note}
-          postcode={note.postCode}
-          customerName={note.customerName}
-        />
-      ).toBlob();
-      return pdfBlob;
-    })
-  );
-  console.log(noteBlob);
-  noteBlob.map((nb) => {
-    const url = URL.createObjectURL(nb);
-    window.open(url, "_blank");
-  });
-  // console.log(
-  //   await pdf(
-  //     <MyDocument
-  //       notes={notes[0].note}
-  //       postcode={notes[0].postCode}
-  //       customerName={notes[0].customerName}
-  //     />
-  //   ).toBlob()
-  // );
+    try {
+        const noteBlob = await pdf(<MyBulkDocument notes={notes} />).toBlob()
+        const url = URL.createObjectURL(noteBlob);
+        window.open(url, "_blank");
+    } catch (error) {
+        console.log(error)
+    }
 };
-// (
-//   <Document>
-//     <Page size="A4" style={styles.body}>
-//       {notes.map(({ note, postCode }, key) => (
-//         <Fragment key={key}>
-//           <Text style={styles.header}>Notes</Text>
-//           <Text style={styles.notes}>{note}</Text>
-//           <Text style={styles.postcode}>Post Code: {postCode}</Text>
-//         </Fragment>
-//       ))}
-//       <Text
-//         style={styles.pageNumber}
-//         render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
-//         fixed
-//       />
-//     </Page>
-//   </Document>
-// );
 
 const NoteStatus = ({ data: notes, selectedNotes }) => {
-  const { data, isLoading } = useGetNoteStatusQuery();
-  const [setNotesDownloadedAll, { isLoading: mutationLoading }] =
-    useSetNotesDownloadedAllMutation();
-  return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      {isLoading ? (
-        <LinearProgress />
-      ) : (
-        <>
-          <Grid item xs={6}>
-            <Typography variant="h1">No. of undownloaded notes</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="h2">{data?.count || 0}</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Stack direction="row" gap={2}>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: "white",
-                  color: "black",
-                  "&:hover": {
-                    bgcolor: "grey.200",
-                    color: "black",
-                  },
-                }}
-                onClick={() => {
-                  myAllDocument({ notes: notes.filter((n) => !n.downloaded) });
-                  setNotesDownloadedAll();
-                }}
-                disabled={mutationLoading}
-              >
-                Download All
-              </Button>
-              <Button
-                sx={{
-                  bgcolor: selectedNotes.length === 0 ? "grey" : "white",
-                  color: "black",
-                  "&:hover": {
-                    bgcolor: "grey.200",
-                    color: "black",
-                  },
-                }}
-                disabled={selectedNotes.length === 0}
-                onClick={() => {
-                  console.log(selectedNotes.map((sl) => sl.original));
-                  myAllDocument({
-                    notes: selectedNotes.map((sl) => sl.original),
-                  });
-                  // setNotesDownloadedAll();
-                }}
-              >
-                Download selected
-              </Button>
-            </Stack>
-            {/* <PDFDownloadLink
-              document={
-                <MyAllDocument notes={notes.filter((n) => !n.downloaded)} />
-              }
-              fileName={`notes.pdf`}
-            >
-              {({ loading, error }) => {
-                if (error) {
-                  return JSON.stringify(error);
-                }
-                return loading ? (
-                  "Loading document..."
-                ) : (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: "white",
-                      color: "black",
-                      "&:hover": {
-                        bgcolor: "grey.200",
-                        color: "black",
-                      },
-                    }}
-                    onClick={() => setNotesDownloadedAll()}
-                    disabled={mutationLoading}
-                  >
-                    Download All
-                  </Button>
-                );
-              }}
-            </PDFDownloadLink> */}
-          </Grid>
-        </>
-      )}
-    </Grid>
-  );
+    const { data, isLoading } = useGetNoteStatusQuery();
+    const [setNotesDownloadedAll, { isLoading: mutationLoading }] =
+        useSetNotesDownloadedAllMutation();
+
+    const handleDownloadSelectedNoted = () => {
+        myAllDocument({
+            notes: selectedNotes.map((sl) => sl.original),
+        });
+    }
+
+    const handleDownloadAll = () => {
+        const allNotes = notes.filter((n) => !n.downloaded)
+        if (allNotes.length === 0) {
+            alert("No notes to download")
+            return
+        }
+        myAllDocument({ notes: allNotes });
+        setNotesDownloadedAll();
+    }
+
+    return (
+        <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+        >
+            {isLoading ? (
+                <LinearProgress />
+            ) : (
+                <>
+                    <Grid item xs={6}>
+                        <Typography variant="h1">No. of undownloaded notes</Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography variant="h2">{data?.count || 0}</Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Stack direction="row" gap={2}>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    bgcolor: "white",
+                                    color: "black",
+                                    "&:hover": {
+                                        bgcolor: "grey.200",
+                                        color: "black",
+                                    },
+                                }}
+                                onClick={handleDownloadAll}
+                                disabled={mutationLoading}
+                            >
+                                Download All
+                            </Button>
+                            <Button
+                                sx={{
+                                    bgcolor: selectedNotes.length === 0 ? "grey" : "white",
+                                    color: "black",
+                                    "&:hover": {
+                                        bgcolor: "grey.200",
+                                        color: "black",
+                                    },
+                                }}
+                                disabled={selectedNotes.length === 0}
+                                onClick={handleDownloadSelectedNoted}
+                            >
+                                Download selected
+                            </Button>
+                        </Stack>
+                    </Grid>
+                </>
+            )}
+        </Grid>
+    );
 };
 
 export default NoteStatus;

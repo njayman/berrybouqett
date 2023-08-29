@@ -5,7 +5,6 @@ import Notes from "./Notes";
 import { useAuthUser } from "react-auth-kit";
 import NoteStatus from "./NoteStatus";
 import { useMemo, useState } from "react";
-import DownloadButton from "./DownloadButton";
 import moment from "moment";
 import EditNotes from "./EditNotes";
 import DeleteNotes from "./DeleteNotes";
@@ -16,7 +15,6 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { useGetCategoriesQuery } from "@state/api";
 
 const NotesPage = () => {
     const { data, isLoading } = useGetNotesQuery();
@@ -24,7 +22,6 @@ const NotesPage = () => {
     const user = useAuthUser()();
     const [rowSelection, setRowSelection] = useState({});
     const columnHelper = createColumnHelper();
-    const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
 
     const columns = useMemo(() => {
         const clms = [
@@ -50,6 +47,7 @@ const NotesPage = () => {
                         />
                     </div>
                 ),
+                enableSorting: false
             }),
             columnHelper.accessor("sl", {
                 cell: (info) => info.getValue(),
@@ -78,14 +76,6 @@ const NotesPage = () => {
             columnHelper.accessor("updatedAt", {
                 cell: (info) => moment(info.getValue()).format("DD-MM-YYYY hh:mm:ss a"),
                 header: () => "Note taking time",
-            }),
-            columnHelper.accessor("downloaded", {
-                cell: (info) => {
-                    return (
-                        <DownloadButton status={info.getValue()} note={info.row.original} />
-                    );
-                },
-                header: () => "Single Download",
             }),
             columnHelper.accessor("spdownload", {
                 cell: (info) =>
@@ -116,7 +106,6 @@ const NotesPage = () => {
     const table = useReactTable({
         initialState: {
             columnVisibility: {
-                download: user?.role === "user",
                 spdownload: user?.role === "user",
                 adminactions: user?.role === "admin",
             },
