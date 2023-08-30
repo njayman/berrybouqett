@@ -11,7 +11,7 @@ import {
 import Caligraffitti from "@assets/Calligraffitti-Regular.ttf"
 import { Fragment } from "react";
 
-Font.register({ family: 'Caligraffitti', src: Caligraffitti });
+Font.register({ family: 'Caligraffitti', src: Caligraffitti, fontWeight: "bold" });
 
 
 
@@ -34,100 +34,77 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
+        flex: 1
     },
-    redBody: {
+    imageContainer: {
+        height: "100%",
         width: "100%",
-        padding: "20px",
-        backgroundColor: "red",
-        color: "white",
+        padding: "30px"
     },
     image: {
-        height: "200px",
+        height: "100%",
         width: "100%",
-        objectFit: "contain",
-        margin: "auto",
+        objectFit: "contain"
     },
     note: {
+        fontSize: 19,
         fontFamily: "Caligraffitti"
+    },
+    code: {
+        position: "absolute",
+        bottom: "30px",
+        right: "30px",
+        padding: "3px",
+        backgroundColor: "black",
+        color: "white",
     }
 });
 
 export const MySingleDocument = ({ notes, category, postcode }) => (
     <Document>
-        <Page style={{}} size="A5" orientation="landscape">
-            <View style={{ height: "100%", width: "100%" }}>
+        <Page size="A5" orientation="landscape">
+            <View style={styles.imageContainer}>
                 <Image
                     cache={false}
                     source={category}
                     src={category}
-                    style={{ height: "100%", width: "100%", objectFit: "cover" }}
+                    style={styles.image}
                 />
             </View>
         </Page>
         <Page style={styles.body} size="A5" orientation="landscape">
             <View style={styles.evenFlexRow}>
-                <View
-                    style={{
-                        ...styles.evenFlexColumn,
-                        flex: 1,
-                    }}
-                >
-                    <Text style={{
-                        fontSize: 18,
-                        fontFamily: "Caligraffitti"
-                    }}>{notes}</Text>
+                <View style={styles.evenFlexColumn}>
+                    <Text style={styles.note}>{notes}</Text>
                 </View>
             </View>
-            <Text style={{
-                position: "absolute",
-                bottom: "30px",
-                right: "30px",
-                padding: "3px",
-                backgroundColor: "black",
-                color: "white",
-            }}>{postcode.toUpperCase()}</Text>
+            <Text style={styles.code}>{postcode.toUpperCase()}</Text>
         </Page>
     </Document>
 );
 
 export const MyBulkDocument = ({ notes }) => {
-    console.log(notes)
     return (
         <Document>
             {notes.map(({ category, note, postCode }, key) => (
                 <Fragment key={key}>
-                    <Page style={{}} size="A5" orientation="landscape">
-                        <View style={{ height: "100%", width: "100%" }}>
+                    <Page size="A5" orientation="landscape">
+                        <View style={styles.imageContainer}>
                             <Image
                                 cache={false}
                                 source={category.image}
                                 src={category.image}
-                                style={{ height: "100%", width: "100%", objectFit: "cover" }}
+                                style={styles.image}
                             />
                         </View>
                     </Page>
                     <Page style={styles.body} size="A5" orientation="landscape">
                         <View style={styles.evenFlexRow}>
-                            <View
-                                style={{
-                                    ...styles.evenFlexColumn,
-                                    flex: 1,
-                                }}
-                            >
-                                <Text style={{
-                                    fontSize: 18,
-                                    fontFamily: "Caligraffitti"
-                                }}>{note}</Text>
+                            <View style={styles.evenFlexColumn}>
+                                <Text style={styles.note}>{note}</Text>
                             </View>
                         </View>
-                        <Text style={{
-                            position: "absolute",
-                            bottom: "30px",
-                            right: "30px",
-                            padding: "3px",
-                            backgroundColor: "black",
-                            color: "white",
-                        }}>{postCode.toUpperCase()}</Text>
+                        <Text style={styles.code}>{postCode.toUpperCase()}</Text>
                     </Page>
 
                 </Fragment>
