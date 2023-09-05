@@ -24,6 +24,7 @@ export const getNotes = async (_, res) => {
                     note: 1,
                     category: '$category',
                     downloaded: 1,
+                    fontSize: 1,
                     createdAt: 1,
                     updatedAt: 1, // Convert slNo to number and rename as sl
                 },

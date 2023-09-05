@@ -10,6 +10,7 @@ const SpecialDownloadButton = ({ note }) => {
         try {
             const noteBlob = await pdf(
                 <MySingleDocument
+                    fonSize={note.fonSize}
                     notes={note.note}
                     postcode={note.postCode}
                     customerName={note.customerName}

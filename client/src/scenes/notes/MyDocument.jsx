@@ -2,16 +2,15 @@ import {
     Document,
     Page,
     Text,
-    PDFDownloadLink,
     StyleSheet,
     View,
     Image,
     Font,
 } from "@react-pdf/renderer";
-import Caligraffitti from "@assets/Calligraffitti-Regular.ttf"
+import MagicSaturday from "@assets/MagicSaturday.ttf"
 import { Fragment } from "react";
 
-Font.register({ family: 'Caligraffitti', src: Caligraffitti, fontWeight: "bold" });
+Font.register({ family: 'MagicSaturday', src: MagicSaturday, fontWeight: "bold" });
 
 
 
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     },
     note: {
         fontSize: 19,
-        fontFamily: "Caligraffitti"
+        fontFamily: "MagicSaturday"
     },
     code: {
         position: "absolute",
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export const MySingleDocument = ({ notes, category, postcode }) => (
+export const MySingleDocument = ({ notes, category, postcode, fontSize }) => (
     <Document>
         <Page size="A5" orientation="landscape">
             <View style={styles.imageContainer}>
@@ -75,7 +74,10 @@ export const MySingleDocument = ({ notes, category, postcode }) => (
         <Page style={styles.body} size="A5" orientation="landscape">
             <View style={styles.evenFlexRow}>
                 <View style={styles.evenFlexColumn}>
-                    <Text style={styles.note}>{notes}</Text>
+                    <Text style={{
+                        ...styles.note,
+                        fontSize
+                    }}>{notes}</Text>
                 </View>
             </View>
             <Text style={styles.code}>{postcode.toUpperCase()}</Text>
@@ -86,7 +88,7 @@ export const MySingleDocument = ({ notes, category, postcode }) => (
 export const MyBulkDocument = ({ notes }) => {
     return (
         <Document>
-            {notes.map(({ category, note, postCode }, key) => (
+            {notes.map(({ category, note, postCode, fontSize }, key) => (
                 <Fragment key={key}>
                     <Page size="A5" orientation="landscape">
                         <View style={styles.imageContainer}>
@@ -101,7 +103,7 @@ export const MyBulkDocument = ({ notes }) => {
                     <Page style={styles.body} size="A5" orientation="landscape">
                         <View style={styles.evenFlexRow}>
                             <View style={styles.evenFlexColumn}>
-                                <Text style={styles.note}>{note}</Text>
+                                <Text style={{ ...styles.note, fontSize }}>{note}</Text>
                             </View>
                         </View>
                         <Text style={styles.code}>{postCode.toUpperCase()}</Text>

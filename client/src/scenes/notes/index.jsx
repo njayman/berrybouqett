@@ -69,6 +69,10 @@ const NotesPage = () => {
                 cell: (info) => info.getValue(),
                 header: () => "Post Code",
             }),
+            columnHelper.accessor("fontSize", {
+                cell: (info) => info.getValue(),
+                header: () => "Font Size",
+            }),
             columnHelper.accessor("note", {
                 cell: (info) => info.getValue(),
                 header: () => "Note",
