@@ -122,6 +122,20 @@ export const api = createApi({
             },
             invalidatesTags: ["Notes", "NoteStatus"],
         }),
+        getNoteConfig: build.query({
+            query: () => `noteconfig`,
+            providesTags: ["NoteConfig"],
+        }),
+        editNoteConfig: build.mutation({
+            query({ body }) {
+                return {
+                    url: `noteconfig/`,
+                    method: "PATCH",
+                    body,
+                };
+            },
+            invalidatesTags: ["NoteConfig"],
+        }),
         getCategories: build.query({
             query: () => "categories",
             providesTags: ["Categories"],
@@ -172,6 +186,8 @@ export const {
     useGetNotesQuery,
     useGetNoteStatusQuery,
     useAddNotesMutation,
+    useGetNoteConfigQuery,
+    useEditNoteConfigMutation,
     useAddCategoriesMutation,
     useEditNotesMutation,
     useEditCategoriesMutation,

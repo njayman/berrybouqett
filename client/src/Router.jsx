@@ -13,6 +13,7 @@ import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import Auth from "@scenes/auth";
 import Notes from "@scenes/notes";
 import Category from "@scenes/category";
+import NoteConfig from "@scenes/config";
 
 const PrivateRoute = ({ Component, allowedRoles }) => {
     const isAuthenticated = useIsAuthenticated()();
@@ -68,6 +69,15 @@ const Router = () => {
                         element={
                             <PrivateRoute
                                 Component={Category}
+                                allowedRoles={["admin"]}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/noteconfig"
+                        element={
+                            <PrivateRoute
+                                Component={NoteConfig}
                                 allowedRoles={["admin"]}
                             />
                         }

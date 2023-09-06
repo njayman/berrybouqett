@@ -24,7 +24,6 @@ export const getNotes = async (_, res) => {
                     note: 1,
                     category: '$category',
                     downloaded: 1,
-                    fontSize: 1,
                     createdAt: 1,
                     updatedAt: 1, // Convert slNo to number and rename as sl
                 },
@@ -76,7 +75,7 @@ export const editNotes = async (req, res) => {
 export const deleteNotes = async (req, res) => {
     try {
         console.log(req.body);
-        await Note.deleteOne({ _id: req.params.id }, { $set: req.body });
+        await Note.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Note deleted" });
     } catch (error) {
         res.status(404).json({ message: error.message });

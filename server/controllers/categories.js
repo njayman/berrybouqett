@@ -61,7 +61,7 @@ export const editCategories = async (req, res) => {
 
 export const deleteCategories = async (req, res) => {
     try {
-        await Category.deleteOne({ _id: req.params.id }, { $set: req.body });
+        await Category.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Category deleted" });
     } catch (error) {
         res.status(404).json({ message: error.message });

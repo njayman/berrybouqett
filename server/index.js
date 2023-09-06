@@ -11,6 +11,7 @@ import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 import notesRoutes from "./routes/notes.js";
+import noteconfigRoutes from "./routes/noteconfig.js"
 import categoriesRoutes from "./routes/categories.js"
 import authRoutes from "./routes/auth.js";
 
@@ -50,6 +51,7 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 app.use("/notes", notesRoutes);
+app.use("/noteconfig", noteconfigRoutes);
 app.use("/categories", categoriesRoutes);
 app.use("/auth", authRoutes);
 app.use("/uploads", express.static(path.join(baseDir, "uploads")));

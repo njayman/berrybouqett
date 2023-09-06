@@ -7,11 +7,11 @@ import {
 import { MyBulkDocument } from "./MyDocument"
 
 import { pdf } from "@react-pdf/renderer";
-import { useSetNotesDownloadedBulkMutation } from "@state/api";
+import { useSetNotesDownloadedBulkMutation, useGetNoteConfigQuery } from "@state/api";
 
-const myAllDocument = async ({ notes }) => {
+const myAllDocument = async ({ notes, fontSize }) => {
     try {
-        const noteBlob = await pdf(<MyBulkDocument notes={notes} />).toBlob()
+        const noteBlob = await pdf(<MyBulkDocument notes={notes} fontSize={fontSize} />).toBlob()
         const url = URL.createObjectURL(noteBlob);
         window.open(url, "_blank");
     } catch (error) {
@@ -20,6 +20,7 @@ const myAllDocument = async ({ notes }) => {
 };
 
 const NoteStatus = ({ data: notes, selectedNotes }) => {
+    const { isLoading: configLoading, data: noteconfig } = useGetNoteConfigQuery()
     const { data, isLoading } = useGetNoteStatusQuery();
     const [setNotesDownloadedAll, { isLoading: mutationLoading }] =
         useSetNotesDownloadedAllMutation();
@@ -29,6 +30,7 @@ const NoteStatus = ({ data: notes, selectedNotes }) => {
         const selNotes = selectedNotes.map((sl) => sl.original)
         myAllDocument({
             notes: selNotes,
+            fontSize: data.fontSize
         });
         const selNotesIds = selNotes.map(sn => sn._id)
         setNotesDownloadedBulk({

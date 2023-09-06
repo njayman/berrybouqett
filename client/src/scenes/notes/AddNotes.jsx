@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -17,7 +17,6 @@ const initValues = {
   postCode: "",
   note: "",
   category: "",
-  fontSize: 19
 };
 
 const AddNotes = () => {
@@ -78,22 +77,6 @@ const AddNotes = () => {
         name="postCode"
         label="Post Code"
         placeholder="Post Code"
-        disabled={isLoading}
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        InputProps={{
-          inputProps: {
-            min: 5,
-            max: 50
-          }
-        }} value={notesData["fontSize"]}
-        id="fontSize"
-        name="fontSize"
-        label="Font Size"
-        placeholder="Font Size"
-        type="number"
         disabled={isLoading}
         onChange={handleChange}
         required

@@ -15,6 +15,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import { useGetNoteConfigQuery } from "@state/api";
 
 const NotesPage = () => {
     const { data, isLoading } = useGetNotesQuery();
@@ -68,10 +69,6 @@ const NotesPage = () => {
             columnHelper.accessor("postCode", {
                 cell: (info) => info.getValue(),
                 header: () => "Post Code",
-            }),
-            columnHelper.accessor("fontSize", {
-                cell: (info) => info.getValue(),
-                header: () => "Font Size",
             }),
             columnHelper.accessor("note", {
                 cell: (info) => info.getValue(),

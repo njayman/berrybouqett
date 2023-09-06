@@ -1,16 +1,17 @@
 import { Button } from "@mui/material";
-import { useSetNotesDownloadedMutation } from "@state/api";
+import { useSetNotesDownloadedMutation, useGetNoteConfigQuery } from "@state/api";
 import { pdf } from "@react-pdf/renderer";
 import { memo } from "react";
 import { MySingleDocument } from "./MyDocument";
 
 const SpecialDownloadButton = ({ note }) => {
+    const { isLoading: configLoading, data: noteconfig } = useGetNoteConfigQuery()
     const [setNotesDownloaded, { isLoading }] = useSetNotesDownloadedMutation();
     const handleClick = async () => {
         try {
             const noteBlob = await pdf(
                 <MySingleDocument
-                    fonSize={note.fonSize}
+                    fonSize={noteconfig.fonSize}
                     notes={note.note}
                     postcode={note.postCode}
                     customerName={note.customerName}
@@ -35,7 +36,7 @@ const SpecialDownloadButton = ({ note }) => {
             variant="contained"
             size="small"
             onClick={handleClick}
-            disabled={isLoading}
+            disabled={isLoading && configLoading}
             color={note.downloaded ? "success" : "notdownloaded"}
         >
             Special Download

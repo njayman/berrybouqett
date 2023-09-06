@@ -26,6 +26,8 @@ import {
     PieChartOutlined,
     Note,
     Category,
+    SettingsAccessibility,
+    Settings,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -46,6 +48,11 @@ const navItems = [
     {
         text: "Category",
         icon: <Category />,
+        roles: ["admin"],
+    },
+    {
+        text: "NoteConfig",
+        icon: <Settings />,
         roles: ["admin"],
     },
     {

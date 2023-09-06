@@ -106,22 +106,6 @@ const EditNotes = ({ note }) => {
                   required
                 />
                 <TextField
-                  InputProps={{
-                    inputProps: {
-                      min: 5,
-                      max: 50
-                    }
-                  }} value={notesData["fontSize"]}
-                  id="fontSize"
-                  name="fontSize"
-                  label="Font Size"
-                  placeholder="Font Size"
-                  type="number"
-                  disabled={isLoading}
-                  onChange={handleChange}
-                  required
-                />
-                <TextField
                   value={notesData["note"]}
                   id="note"
                   name="note"

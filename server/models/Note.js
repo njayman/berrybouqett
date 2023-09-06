@@ -23,11 +23,6 @@ const NoteSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    fontSize: {
-      type: Number,
-      required: true,
-      default: 19
-    },
     downloaded: {
       type: Boolean,
       default: false,
