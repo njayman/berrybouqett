@@ -7,10 +7,10 @@ import {
     Image,
     Font,
 } from "@react-pdf/renderer";
-import MagicSaturday from "@assets/MagicSaturday.ttf"
-import { Fragment } from "react";
+import Calligraffitti from "@assets/Calligraffitti.ttf"
+import { Fragment, useEffect } from "react";
 
-Font.register({ family: 'MagicSaturday', src: MagicSaturday, fontWeight: "bold" });
+Font.register({ family: 'Calligraffitti', src: Calligraffitti, fontWeight: "bold" });
 
 
 
@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
         width: "100%",
         objectFit: "contain"
     },
+    note: {
+        fontFamily: "Calligraffitti"
+    },
     code: {
         position: "absolute",
         bottom: "30px",
@@ -55,69 +58,54 @@ const styles = StyleSheet.create({
     }
 });
 
-export const MySingleDocument = ({ notes, category, postcode, fontSize = 19 }) => {
-    const noteStyle = StyleSheet.create({
-        note: {
-            fontSize: fontSize,
-            fontFamily: "MagicSaturday"
-        }
-    })
-    return (
-        <Document>
-            <Page size="A5" orientation="landscape">
-                <View style={styles.imageContainer}>
-                    <Image
-                        cache={false}
-                        source={category}
-                        src={category}
-                        style={styles.image}
-                    />
+export const MySingleDocument = ({ notes, category, postcode, fontSize }) => (
+    <Document>
+        <Page size="A5" orientation="landscape">
+            <View style={styles.imageContainer}>
+                <Image
+                    cache={false}
+                    source={category}
+                    src={category}
+                    style={styles.image}
+                />
+            </View>
+        </Page>
+        <Page style={styles.body} size="A5" orientation="landscape">
+            <View style={styles.evenFlexRow}>
+                <View style={styles.evenFlexColumn}>
+                    <Text style={{ ...styles.note, fontSize }}>{notes}</Text>
                 </View>
-            </Page>
-            <Page style={styles.body} size="A5" orientation="landscape">
-                <View style={styles.evenFlexRow}>
-                    <View style={styles.evenFlexColumn}>
-                        <Text style={noteStyle.note}>{notes}</Text>
+            </View>
+            <Text style={styles.code}>{postcode.toUpperCase()}</Text>
+        </Page>
+    </Document>
+)
+
+export const MyBulkDocument = ({ notes, fontSize }) => (
+    <Document>
+        {notes.map(({ category, note, postCode }, key) => (
+            <Fragment key={key}>
+                <Page size="A5" orientation="landscape">
+                    <View style={styles.imageContainer}>
+                        <Image
+                            cache={false}
+                            source={category.image}
+                            src={category.image}
+                            style={styles.image}
+                        />
                     </View>
-                </View>
-                <Text style={styles.code}>{postcode.toUpperCase()}</Text>
-            </Page>
-        </Document>
-    )
-};
-
-export const MyBulkDocument = ({ notes, fontSize = 19 }) => {
-    const noteStyle = StyleSheet.create({
-        note: {
-            fontSize: fontSize,
-            fontFamily: "MagicSaturday"
-        }
-    })
-    return (
-        <Document>
-            {notes.map(({ category, note, postCode }, key) => (
-                <Fragment key={key}>
-                    <Page size="A5" orientation="landscape">
-                        <View style={styles.imageContainer}>
-                            <Image
-                                cache={false}
-                                source={category.image}
-                                src={category.image}
-                                style={styles.image}
-                            />
+                </Page>
+                <Page style={styles.body} size="A5" orientation="landscape">
+                    <View style={styles.evenFlexRow}>
+                        <View style={styles.evenFlexColumn}>
+                            <Text style={{ ...styles.note, fontSize }}>{note}</Text>
                         </View>
-                    </Page>
-                    <Page style={styles.body} size="A5" orientation="landscape">
-                        <View style={styles.evenFlexRow}>
-                            <View style={styles.evenFlexColumn}>
-                                <Text style={noteStyle.note}>{note}</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.code}>{postCode.toUpperCase()}</Text>
-                    </Page>
+                    </View>
+                    <Text style={styles.code}>{postCode.toUpperCase()}</Text>
+                </Page>
 
-                </Fragment>
-            ))}
-        </Document>
-    )
-}
+            </Fragment>
+        ))}
+    </Document>
+)
+
