@@ -22,6 +22,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import DeleteAllNotes from "./DeleteAllNotes";
 
 const NotesPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -156,7 +157,10 @@ const NotesPage = () => {
       <Grid item xs={12}>
         <Container>
           {user.role === "admin" ? (
-            <AddNotes />
+            <>
+              <DeleteAllNotes />
+              <AddNotes />
+            </>
           ) : (
             <>
               {isLoading ? (

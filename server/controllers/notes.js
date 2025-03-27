@@ -91,6 +91,20 @@ export const deleteNotes = async (req, res) => {
   }
 };
 
+export const deleteAllNotes = async (_req, res) => {
+  try {
+    await Note.deleteMany({});
+    res
+      .status(200)
+      .json({ message: "All notes have been deleted successfully." });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error deleting notes", error: error.message });
+  }
+};
+
 // export const specialDownload = async (req, res) => {
 //     try {
 //         // Calling the template render func with dynamic data

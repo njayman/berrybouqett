@@ -7,14 +7,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
+  Stack,
 } from "@mui/material";
-import { useDeleteNotesMutation } from "@state/api";
-import { Delete } from "@mui/icons-material";
+import { useDeleteAllNotesMutation } from "@state/api";
 
-const DeleteNotes = ({ id }) => {
+const DeleteAllNotes = () => {
   const [open, setOpen] = useState(false);
-  const [deleteNotes, { isLoading }] = useDeleteNotesMutation();
+  const [deleteAllNotes, { isLoading }] = useDeleteAllNotesMutation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,11 +25,7 @@ const DeleteNotes = ({ id }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await deleteNotes({
-        params: {
-          id,
-        },
-      });
+      const { data } = await deleteAllNotes();
 
       if (data) {
         handleClose();
@@ -38,17 +33,23 @@ const DeleteNotes = ({ id }) => {
     } catch (error) {}
   };
   return (
-    <>
-      <IconButton onClick={handleClickOpen}>
-        <Delete />
-      </IconButton>
+    <Stack
+      component="form"
+      direction="row"
+      justifyContent="end"
+      onSubmit={onSubmit}
+      sx={{ pb: 2 }}
+    >
+      <Button color="secondary" variant="contained" onClick={handleClickOpen}>
+        Delete all Notes
+      </Button>
       {open && (
         <Dialog onClose={handleClose} open={open}>
           <Box component="form" onSubmit={onSubmit}>
             <DialogTitle>Delete Notes</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Do you really want to delete this note?
+                Do you really want to delete all notes?
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -67,8 +68,8 @@ const DeleteNotes = ({ id }) => {
           </Box>
         </Dialog>
       )}
-    </>
+    </Stack>
   );
 };
 
-export default DeleteNotes;
+export default DeleteAllNotes;

@@ -93,6 +93,15 @@ export const api = createApi({
       },
       invalidatesTags: ["Notes"],
     }),
+    deleteAllNotes: build.mutation({
+      query() {
+        return {
+          url: `notes/deleteAll`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["Notes"],
+    }),
     setNotesDownloaded: build.mutation({
       query({ params, body }) {
         return {
@@ -192,6 +201,7 @@ export const {
   useEditNotesMutation,
   useEditCategoriesMutation,
   useDeleteNotesMutation,
+  useDeleteAllNotesMutation,
   useDeleteCategoriesMutation,
   useSetNotesDownloadedMutation,
   useSetNotesDownloadedBulkMutation,
